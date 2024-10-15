@@ -10,7 +10,6 @@ class CapitalFlowScraper:
             'username': email,
             'password': password
         }
-        default_list = pd.DataFrame
 
     def default(self):
         with sync_playwright() as p:
@@ -25,11 +24,9 @@ class CapitalFlowScraper:
             page.fill('text="Password"', self.credentials['password'])
 
             page.click('text="Login"')
-            print(type(page))
             try:
                 page.wait_for_selector('a.introjs-skipbutton', timeout=20000)
                 page.click('a.introjs-skipbutton')
-                print("Intro skip button clicked.")
             except Exception as e:
                 print(f"Error or timeout while waiting for skip button: {e}")
 
@@ -60,10 +57,6 @@ class CapitalFlowScraper:
             browser.close()
 
     def filter(self, page):
-        odte = False
-        weeklies = False
-        swings = False
-        leaps = False
 
         odte = input("Do you want to apply '0DTE' filter? (yes/no): ").strip().lower() == 'yes'
         weeklies = input("Do you want to apply 'WEEKLIES' filter? (yes/no): ").strip().lower() == 'yes'
@@ -81,6 +74,8 @@ class CapitalFlowScraper:
 
         if leaps:
             page.click('text="Leaps"')
+
+
 
     def scroll(self, page, intervals=500, duration=10):
 
