@@ -35,6 +35,8 @@ class CapitalFlowScraper:
 
             time.sleep(5)
             self.filter(page)
+            time.sleep(1)
+            self.scroll(page)
             time.sleep(5)
 
             html = page.content()
@@ -79,6 +81,21 @@ class CapitalFlowScraper:
 
         if leaps:
             page.click('text="Leaps"')
+
+    def scroll(self, page, intervals=500, duration=10):
+
+        scroll_step = intervals
+        time_per_interval = 1 / intervals
+
+        start_time = time.time()
+
+        while time.time() - start_time < duration:
+            for _ in range(intervals):
+                page.evaluate(f'window.scrollBy(0, {scroll_step})')
+                time.sleep(time_per_interval)
+
+            if time.time() - start_time >= duration:
+                break
 
 
 
