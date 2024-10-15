@@ -1,0 +1,10 @@
+{
+  "home": {
+    "url": "https://dashboard.capitalflow.app",
+    "title": "CapitalFlow"
+  },
+  "/top-contracts": {
+    "url": "https://dashboard.capitalflow.app/top-contracts",
+    "title": "CapitalFlow"
+  }
+}
