@@ -95,7 +95,7 @@ class CapitalFlowScraper:
 
 
 if __name__ == "__main__":
-    email = 'adam.marshall8920@gmail.com'
-    password = '@Aa5544163'
+    email = ""
+    password = ""
     scraper = CapitalFlowScraper(email, password)
     scraper.default()
