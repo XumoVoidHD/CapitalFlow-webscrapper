@@ -5,8 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11d63c4b-e274-48fa-9c12-325bb074046f" name="Changes" comment="OOPS implementation">
+      <change afterPath="$PROJECT_DIR$/capital_flow_scraper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/works5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursor_pointer_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/cursor_pointer_data.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/a.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capitalflow_accounts.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_accounts.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capitalflow_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capitalflow_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capitalflow_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capitalflow_reports.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_reports.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capitalflow_top-contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_top-contracts.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capitalflow_transactions.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_transactions.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cursor_pointer_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tests/cursor_pointer_data.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/output.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test 10.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test 10.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test11.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test11.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test12.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test12.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test13.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test13.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test4.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test5.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test6.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test6.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test7.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test7.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test8.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test8.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test9.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test9.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/works1.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/works1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/works2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/works2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/works4.py" beforeDir="false" afterPath="$PROJECT_DIR$/works4.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,18 +52,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "XumoVoidHD"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;XumoVoidHD&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/XumoVoidHD/CapitalFlow-webscrapper",
-    "accountId": "b80d9fb7-13fe-49cc-a3c7-fd151d6d2102"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/XumoVoidHD/CapitalFlow-webscrapper&quot;,
+    &quot;accountId&quot;: &quot;b80d9fb7-13fe-49cc-a3c7-fd151d6d2102&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -47,6 +75,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.capital_flow_scraper.executor": "Run",
+    "Python.lit.executor": "Run",
     "Python.main.executor": "Run",
     "Python.test 10.executor": "Run",
     "Python.test.executor": "Run",
@@ -64,12 +94,48 @@
     "Python.works1.executor": "Run",
     "Python.works2.executor": "Run",
     "Python.works4.executor": "Run",
+    "Python.works5.executor": "Run",
+    "Python.wow.executor": "Run",
     "Python.wroks3.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\vedan\PycharmProjects\Web Scrapper\tests" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="lit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Web Scrapper" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lit.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.lit" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -110,11 +176,38 @@
       <option name="project" value="LOCAL" />
       <updated>1728990808241</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="OOPS implementation">
+      <option name="closed" value="true" />
+      <created>1728991961109</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1728991961109</updated>
+    </task>
+    <task id="LOCAL-00005" summary="OOPS implementation">
+      <option name="closed" value="true" />
+      <created>1728992583509</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1728992583510</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="OOPS implementation" />
     <option name="LAST_COMMIT_MESSAGE" value="OOPS implementation" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/lit.py</url>
+          <line>19</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

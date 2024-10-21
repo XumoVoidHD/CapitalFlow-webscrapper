@@ -2,6 +2,8 @@ from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 import pandas as pd
 import time
+import streamlit as st
+
 
 class CapitalFlowScraper:
     def __init__(self, email, password):
@@ -42,8 +44,6 @@ class CapitalFlowScraper:
 
             # sentiment = self.get_text_from_class(soup, 'text-center q-ma-none text-h5 text-positive')
             # call_premium = self.get_text_from_class(soup, 'q-card__section q-card__section--vert')
-            
-
 
             rows = soup.find_all('tr', class_='cursor-pointer')
 
@@ -53,7 +53,9 @@ class CapitalFlowScraper:
                 row_data = [td.get_text(strip=True) for td in row.find_all('td')]
                 data.append(row_data)
 
-            self.default_list = pd.DataFrame(data, columns=['Date', 'Symbol', 'Spot', 'Contract', 'Price', 'Premium', 'Size', 'Bid/Ask', 'Volume'])
+            self.default_list = pd.DataFrame(data,
+                                             columns=['Date', 'Symbol', 'Spot', 'Contract', 'Price', 'Premium', 'Size',
+                                                      'Bid/Ask', 'Volume'])
 
             print(self.default_list)
 
@@ -80,8 +82,6 @@ class CapitalFlowScraper:
         if leaps:
             page.click('text="Leaps"')
 
-
-
     def scroll(self, page, intervals=500, duration=10):
 
         scroll_step = intervals
@@ -99,8 +99,14 @@ class CapitalFlowScraper:
 
 
 
-if __name__ == "__main__":
-    email = ''
-    password = ''
-    scraper = CapitalFlowScraper(email, password)
-    scraper.default()
+email = ''
+password = ''
+scraper = CapitalFlowScraper(email, password)
+scraper.default()
+
+st.title("CapitalFlow Scraper")
+
+if st.button("Click Me!"):
+
+    df = pd.read_csv("wow.csv")
+    st.write(df)
