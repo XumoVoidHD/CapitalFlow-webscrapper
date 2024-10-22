@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="11d63c4b-e274-48fa-9c12-325bb074046f" name="Changes" comment="scrapper updated">
-      <change afterPath="$PROJECT_DIR$/discord_bot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tmp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="11d63c4b-e274-48fa-9c12-325bb074046f" name="Changes" comment="discord bot implementation" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,36 +41,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.capital_flow_scraper.executor": "Run",
-    "Python.lit.executor": "Run",
-    "Python.main.executor": "Debug",
-    "Python.test 10.executor": "Run",
-    "Python.test.executor": "Run",
-    "Python.test11.executor": "Run",
-    "Python.test12.executor": "Run",
-    "Python.test13.executor": "Run",
-    "Python.test14.executor": "Run",
-    "Python.test2.executor": "Run",
-    "Python.test4.executor": "Run",
-    "Python.test5.executor": "Run",
-    "Python.test6.executor": "Run",
-    "Python.test7.executor": "Run",
-    "Python.test8.executor": "Run",
-    "Python.test9.executor": "Run",
-    "Python.tmp.executor": "Run",
-    "Python.works1.executor": "Run",
-    "Python.works2.executor": "Run",
-    "Python.works4.executor": "Run",
-    "Python.works5.executor": "Run",
-    "Python.wow.executor": "Run",
-    "Python.wroks3.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.capital_flow_scraper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lit.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.test 10.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test11.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test12.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test13.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test14.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test4.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test5.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test6.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test7.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test8.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test9.executor&quot;: &quot;Run&quot;,
+    &quot;Python.tmp.executor&quot;: &quot;Run&quot;,
+    &quot;Python.works1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.works2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.works4.executor&quot;: &quot;Run&quot;,
+    &quot;Python.works5.executor&quot;: &quot;Run&quot;,
+    &quot;Python.wow.executor&quot;: &quot;Run&quot;,
+    &quot;Python.wroks3.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\vedan\PycharmProjects\Web Scrapper\tests" />
@@ -206,24 +201,22 @@
       <option name="project" value="LOCAL" />
       <updated>1729628429553</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="discord bot implementation">
+      <option name="closed" value="true" />
+      <created>1729631739646</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1729631739646</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="OOPS implementation" />
     <MESSAGE value="Filters added" />
     <MESSAGE value="scrapper updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="scrapper updated" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/lit.py</url>
-          <line>19</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="discord bot implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="discord bot implementation" />
   </component>
 </project>
