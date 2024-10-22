@@ -4,38 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="11d63c4b-e274-48fa-9c12-325bb074046f" name="Changes" comment="OOPS implementation">
-      <change afterPath="$PROJECT_DIR$/capital_flow_scraper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/works5.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wow.py" afterDir="false" />
+    <list default="true" id="11d63c4b-e274-48fa-9c12-325bb074046f" name="Changes" comment="scrapper updated">
+      <change afterPath="$PROJECT_DIR$/discord_bot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tmp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/a.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capitalflow_accounts.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_accounts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capitalflow_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capitalflow_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capitalflow_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_index.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capitalflow_reports.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_reports.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capitalflow_top-contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_top-contracts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capitalflow_transactions.html" beforeDir="false" afterPath="$PROJECT_DIR$/tests/capitalflow_transactions.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cursor_pointer_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tests/cursor_pointer_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/tests/output.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test 10.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test 10.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test11.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test11.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test12.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test12.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test13.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test13.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test4.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test4.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test5.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test5.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test6.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test6.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test7.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test7.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test8.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test8.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test9.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test9.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/works1.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/works1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/works2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/works2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/works4.py" beforeDir="false" afterPath="$PROJECT_DIR$/works4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +50,7 @@
   "keyToString": {
     "Python.capital_flow_scraper.executor": "Run",
     "Python.lit.executor": "Run",
-    "Python.main.executor": "Run",
+    "Python.main.executor": "Debug",
     "Python.test 10.executor": "Run",
     "Python.test.executor": "Run",
     "Python.test11.executor": "Run",
@@ -91,6 +64,7 @@
     "Python.test7.executor": "Run",
     "Python.test8.executor": "Run",
     "Python.test9.executor": "Run",
+    "Python.tmp.executor": "Run",
     "Python.works1.executor": "Run",
     "Python.works2.executor": "Run",
     "Python.works4.executor": "Run",
@@ -192,12 +166,54 @@
       <option name="project" value="LOCAL" />
       <updated>1728992583510</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="OOPS implementation">
+      <option name="closed" value="true" />
+      <created>1729531586759</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1729531586760</updated>
+    </task>
+    <task id="LOCAL-00007" summary="OOPS implementation">
+      <option name="closed" value="true" />
+      <created>1729531658847</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1729531658847</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Filters added">
+      <option name="closed" value="true" />
+      <created>1729531699371</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1729531699371</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Filters added">
+      <option name="closed" value="true" />
+      <created>1729617724019</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1729617724019</updated>
+    </task>
+    <task id="LOCAL-00010" summary="scrapper updated">
+      <option name="closed" value="true" />
+      <created>1729628429553</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1729628429553</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="OOPS implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="OOPS implementation" />
+    <MESSAGE value="Filters added" />
+    <MESSAGE value="scrapper updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="scrapper updated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

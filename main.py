@@ -6,6 +6,7 @@ import pandas as pd
 import os
 import time
 from datetime import datetime
+from discord_bot import run_discord_bot
 
 class CapitalFlowScraper:
     def __init__(self, email, password, queue):
@@ -210,9 +211,13 @@ def driver():
 
     st.write(filtered_df.reset_index(drop=True))
 
-g_call = 0
-g_put = 0
-g_signal = ""
+if 'call' not in st.session_state:
+    st.session_state['call'] = None
+if 'put' not in st.session_state:
+    st.session_state['put'] = None
+if 'signal' not in st.session_state:
+    st.session_state['signal'] = None
+
 def main():
     global g_call, g_put, g_signal
     st.title("CapitalFlow Scraper")
@@ -242,12 +247,12 @@ def main():
                         st.error(result)
                         break
                     else:
-                        if signal is None:
-                            signal = result
-                        elif call is None:
-                            call = result
-                        elif put is None:
-                            put = result
+                        if st.session_state['signal'] is None:
+                            st.session_state['signal'] = result
+                        elif st.session_state['call'] is None:
+                            st.session_state['call'] = result
+                        elif st.session_state['put'] is None:
+                            st.session_state['put'] = result
 
                 if not process.is_alive():
                     break
@@ -257,21 +262,22 @@ def main():
         else:
             st.error("Please provide both email and password.")
 
-    g_call = call
-    g_put = put
-    g_signal = signal
+    st.write(f"Signal: {st.session_state['signal']}")
+    st.write(f"Total Call Premium: {st.session_state['call']}")
+    st.write(f"Total Put Premium: {st.session_state['put']}")
 
     # if st.button("Driver"):
     #     driver()
 
 main()
+
+if st.button("Alerts"):
+    run_discord_bot("MTI5ODM4NjAxODA1MDkwMDA2MQ.GaNcHa.UgaalCtZ4QL2AxKKL0639nIvbloywdYnNz9ZRs", "481415673957056518", st.session_state['signal'], st.session_state['call'], st.session_state['put'])
+
 df = pd.read_csv("wow1.csv")
 
 symbols = st.sidebar.multiselect("Exclude Symbol(s)", options=df['Symbol'].unique(), default=[])
 
-st.write(f"Signal: {g_signal}")
-st.write(f"Total Call Premium: {g_call}")
-st.write(f"Total Put Premium: {g_put}")
 
 if 'custom_spot' not in st.session_state:
     st.session_state.custom_spot = 1.0
