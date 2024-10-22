@@ -272,7 +272,7 @@ def main():
 main()
 
 if st.button("Alerts"):
-    run_discord_bot("", "", st.session_state['signal'], st.session_state['call'], st.session_state['put'])
+    run_discord_bot("x", "x", st.session_state['signal'], st.session_state['call'], st.session_state['put'])
 
 df = pd.read_csv("wow1.csv")
 
