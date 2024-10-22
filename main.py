@@ -15,21 +15,26 @@ class CapitalFlowScraper:
             'password': password
         }
         self.queue = queue
+        self.signal = None
+        self.call = None
+        self.put = None
 
     def default(self):
         try:
             with sync_playwright() as p:
                 browser = p.chromium.launch(headless=True)
                 context = browser.new_context()
-
                 page = context.new_page()
 
+                # Navigate to the login page
                 page.goto('https://dashboard.capitalflow.app/auth/login')
 
+                # Fill in the login form
                 page.fill('text="Email Address"', self.credentials['username'])
                 page.fill('text="Password"', self.credentials['password'])
-
                 page.click('text="Login"')
+
+                # Wait for the page to load and handle the skip button
                 try:
                     page.wait_for_selector('a.introjs-skipbutton', timeout=20000)
                     page.click('a.introjs-skipbutton')
@@ -37,37 +42,78 @@ class CapitalFlowScraper:
                     print(f"Error or timeout while waiting for skip button: {e}")
 
                 time.sleep(5)
+
+                # Perform filtering and scrolling
                 self.filter(page)
                 time.sleep(1)
                 self.scroll(page)
                 time.sleep(5)
 
+                # Get the page content and parse it
                 html = page.content()
-
                 soup = BeautifulSoup(html, 'html.parser')
 
+                sentiment_element = soup.select_one('div.q-card.card-aggregate-premium p.text-positive')
+                if sentiment_element:
+                    sentiment = sentiment_element.get_text(strip=True)
+                    print(f"Sentiment observed: {sentiment}")
+                    self.signal = sentiment
+                else:
+                    print("Sentiment element not found.")
+
+                # Extract the call premium value
+                call_premium_element = soup.select('div.q-card__section p.text-positive.q-ma-none.text-h5')[
+                    1]  # Accessing the second text-positive element
+                if call_premium_element:
+                    call_premium = call_premium_element.get_text(strip=True)
+                    print(f"Total call premium observed: {call_premium}")
+                    self.call = call_premium
+                else:
+                    print("Call premium element not found.")
+
+                # Extract the put premium value
+                put_premium_element = soup.select('div.q-card__section p.text-negative.q-ma-none.text-h5')[
+                    0]  # Accessing the first text-negative element
+                if put_premium_element:
+                    put_premium = put_premium_element.get_text(strip=True)
+                    print(f"Total put premium observed: {put_premium}")
+                    self.put = put_premium
+                else:
+                    print("Put premium element not found.")
+
+                # Extract the table data
                 rows = soup.find_all('tr', class_='cursor-pointer')
-
                 data = []
-
                 for row in rows:
                     row_data = [td.get_text(strip=True) for td in row.find_all('td')]
                     data.append(row_data)
 
-                self.default_list = pd.DataFrame(data, columns=['Date', 'Symbol', 'Spot', 'Contract', 'Price', 'Premium', 'Size', 'Bid/Ask', 'Volume'])
-
+                # Convert table data to DataFrame
+                self.default_list = pd.DataFrame(data,
+                                                 columns=['Date', 'Symbol', 'Spot', 'Contract', 'Price', 'Premium',
+                                                          'Size', 'Bid/Ask', 'Volume'])
                 print(self.default_list)
-                self.queue.put(self.default_list)
-                self.default_list.to_csv('wow.csv', index=False)
 
+                # Add data to the queue
+                self.queue.put(self.default_list)
+                self.queue.put(self.signal)
+                self.queue.put(self.call)
+                self.queue.put(self.put)
+
+                # Save to CSV
+                self.default_list.to_csv('wow1.csv', index=False)
+
+                # Close the browser
                 browser.close()
-                return self.default_list
+
+                return self.default_list, self.signal, self.call, self.put  # Return the table, sentiment, call premium, and put premium
+
         except Exception as e:
             self.queue.put(f"An error occurred: {e}")
 
     def filter(self, page):
         # Check for the filters using hardcoded logic
-        odte, weeklies, swings, leaps = True, True, True, True
+        odte, weeklies, swings, leaps = False, False, False, False
 
         if odte:
             page.click('text="0DTE"')
@@ -100,45 +146,9 @@ def run_scraper(email, password, queue):
     scraper = CapitalFlowScraper(email, password, queue)
     df = scraper.default()
     print(df)
-# Streamlit UI
-def main():
-    st.title("CapitalFlow Scraper")
 
-    # Input fields for email and password
-    email = st.text_input("Enter your email:", type="default")
-    password = st.text_input("Enter your password:", type="password")
-
-    if st.button("Start Scraping"):
-        if email and password:
-            # Create a Queue for communication between processes
-            queue = Queue()
-
-            # Create and start a separate process for the scraper
-            process = Process(target=run_scraper, args=(email, password, queue))
-            process.start()
-
-            # Wait for results from the queue
-            while True:
-                if not queue.empty():
-                    result = queue.get()
-                    if isinstance(result, pd.DataFrame):
-                        st.success("Scraping completed successfully!")
-                        break
-                    else:
-                        st.error(result)
-                        break
-
-                if not process.is_alive():
-                    break
-
-            process.join()
-        else:
-            st.error("Please provide both email and password.")
-
-if __name__ == "__main__":
-    main()
-
-    df = pd.read_csv("wow.csv")
+def driver():
+    df = pd.read_csv("wow1.csv")
 
     symbols = st.sidebar.multiselect("Exclude Symbol(s)", options=df['Symbol'].unique(), default=[])
 
@@ -211,5 +221,93 @@ if __name__ == "__main__":
     filtered_df['Price'] = filtered_df['Price'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
     filtered_df['Premium'] = filtered_df['Premium'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
 
-    st.write("Filtered Data (Symbols Excluded, Spot, Price, Premium, Volume, Size, and Date-Time Filtered):")
+    # st.write("Filtered Data (Symbols Excluded, Spot, Price, Premium, Volume, Size, and Date-Time Filtered):")
+
     st.write(filtered_df.reset_index(drop=True))
+
+# Streamlit UI
+def main():
+    st.title("CapitalFlow Scraper")
+
+    # Input fields for email and password
+    email = st.text_input("Enter your email:", type="default")
+    password = st.text_input("Enter your password:", type="password")
+
+    if st.button("Start Scraping"):
+        if email and password:
+            # Create a Queue for communication between processes
+            queue = Queue()
+
+            # Create and start a separate process for the scraper
+            process = Process(target=run_scraper, args=(email, password, queue))
+            process.start()
+
+            # Wait for results from the queue
+            while True:
+                if not queue.empty():
+                    result = queue.get()
+                    if isinstance(result, pd.DataFrame):
+                        st.success("Scraping completed successfully!")
+                        break
+                    else:
+                        st.error(result)
+                        break
+
+                if not process.is_alive():
+                    break
+
+            process.join()
+
+        else:
+            st.error("Please provide both email and password.")
+
+    if st.button("Alerts On"):
+        if email and password:
+            # Create a Queue for communication between processes
+            queue = Queue()
+
+            # Create and start a separate process for the scraper
+            process = Process(target=run_scraper, args=(email, password, queue))
+            process.start()
+
+            # Wait for results from the queue
+            df = None
+            call = None
+            put = None
+            signal = None
+
+            while True:
+                if not queue.empty():
+                    result = queue.get()
+
+                    # Check for different types of results
+                    if isinstance(result, pd.DataFrame):
+                        df = result
+                    elif isinstance(result, str) and "error" in result.lower():
+                        st.error(result)
+                        break
+                    else:
+                        # Fetch the other results (call, put, signal) based on the queue order
+                        if signal is None:
+                            signal = result
+                        elif call is None:
+                            call = result
+                        elif put is None:
+                            put = result
+
+                if df is not None and call is not None and put is not None and signal is not None:
+
+                    st.write(f"Signal: {signal}")
+                    st.write(f"Call: {call}")
+                    st.write(f"Puts: {put}")
+                    break
+
+                if not process.is_alive():
+                    break
+
+        else:
+            st.error("Please provide both email and password.")
+
+if __name__ == "__main__":
+    main()
+    driver()
