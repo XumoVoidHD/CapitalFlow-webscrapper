@@ -3,14 +3,13 @@ from multiprocessing import Process, Queue
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 import pandas as pd
-import os
 import time
 from datetime import datetime
-from discord_bot import run_discord_bot
+from discord_bot import send_message
 
-token = ""
-user = ""
-
+token =
+user =
+url =
 
 if 'email' not in st.session_state:
     st.session_state['email'] = ''
@@ -233,8 +232,10 @@ def run_scraper(email, password, queue):
     df = scraper.default()
     print(df)
 
+
 def send_msg(signal, call, put):
-    run_discord_bot(bot_token=token, user_id=user, signal=signal, call=call, put=put)
+    send_message(bot_token=token, user_id=user, signal=signal, call=call, put=put, webhook_url=url, send_to_user=True, send_to_webhook=True)
+
 
 def driver():
     df = pd.read_csv("wow.csv")
@@ -388,11 +389,10 @@ def alert():
                     if not process.is_alive():
                         break
 
-
                 process.join()
 
                 if i < 2:
-                    time.sleep(15*60)
+                    time.sleep(5)
 
         else:
             st.error("Please provide both email and password.")
@@ -402,5 +402,3 @@ if __name__ == "__main__":
     main()
     alert()
     driver()
-
-
