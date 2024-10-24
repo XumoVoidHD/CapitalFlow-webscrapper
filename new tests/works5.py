@@ -1,11 +1,15 @@
+import pandas as pd
+import streamlit as st
+import time
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
-import pandas as pd
-import time
+
+# pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 
 class CapitalFlowScraper:
     def __init__(self, email, password):
-        self.default_list = pd.DataFrame
+        self.default_list = pd.DataFrame()
         self.credentials = {
             'username': email,
             'password': password
@@ -31,7 +35,7 @@ class CapitalFlowScraper:
                 print(f"Error or timeout while waiting for skip button: {e}")
 
             time.sleep(5)
-            self.filter(page)
+            # self.filter(page)
             time.sleep(1)
             self.scroll(page)
             time.sleep(5)
@@ -39,11 +43,6 @@ class CapitalFlowScraper:
             html = page.content()
 
             soup = BeautifulSoup(html, 'html.parser')
-
-            # sentiment = self.get_text_from_class(soup, 'text-center q-ma-none text-h5 text-positive')
-            # call_premium = self.get_text_from_class(soup, 'q-card__section q-card__section--vert')
-            
-
 
             rows = soup.find_all('tr', class_='cursor-pointer')
 
@@ -57,12 +56,12 @@ class CapitalFlowScraper:
 
             print(self.default_list)
 
-            self.default_list.to_csv('cursor_pointer_data.csv', index=False)
+            self.default_list.to_csv('wow.csv', index=False)
+
 
             browser.close()
 
     def filter(self, page):
-
         odte = input("Do you want to apply '0DTE' filter? (yes/no): ").strip().lower() == 'yes'
         weeklies = input("Do you want to apply 'WEEKLIES' filter? (yes/no): ").strip().lower() == 'yes'
         swings = input("Do you want to apply 'SWINGS' filter? (yes/no): ").strip().lower() == 'yes'
@@ -80,10 +79,7 @@ class CapitalFlowScraper:
         if leaps:
             page.click('text="Leaps"')
 
-
-
     def scroll(self, page, intervals=500, duration=10):
-
         scroll_step = intervals
         time_per_interval = 1 / intervals
 
@@ -97,6 +93,10 @@ class CapitalFlowScraper:
             if time.time() - start_time >= duration:
                 break
 
+    # def apply_filters(self, df):
+    #     quit = False
+    #     while quit != True:
+
 
 
 if __name__ == "__main__":
@@ -104,3 +104,5 @@ if __name__ == "__main__":
     password = ''
     scraper = CapitalFlowScraper(email, password)
     scraper.default()
+    # df = pd.read_csv("C:\\Users\\vedan\\PycharmProjects\\Web Scrapper\\wow.csv")
+    st.write(scraper.default_list)

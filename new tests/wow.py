@@ -56,7 +56,7 @@ class CapitalFlowScraper:
             df = self.default_list
             print(self.default_list)
 
-            self.default_list.to_csv('cursor_pointer_data.csv', index=False)
+            self.default_list.to_csv('wow.csv', index=False)
 
             await browser.close()
 

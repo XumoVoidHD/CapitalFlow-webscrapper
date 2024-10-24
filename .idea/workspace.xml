@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="11d63c4b-e274-48fa-9c12-325bb074046f" name="Changes" comment="discord bot implementation" />
+    <list default="true" id="11d63c4b-e274-48fa-9c12-325bb074046f" name="Changes" comment="discord bot implementation">
+      <change afterPath="$PROJECT_DIR$/new.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wow.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capital_flow_scraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/capital_flow_scraper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/discord_bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/discord_bot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/works4.py" beforeDir="false" afterPath="$PROJECT_DIR$/works4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/works5.py" beforeDir="false" afterPath="$PROJECT_DIR$/works5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wow.py" beforeDir="false" afterPath="$PROJECT_DIR$/wow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wroks3.py" beforeDir="false" afterPath="$PROJECT_DIR$/wroks3.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -209,8 +221,43 @@
       <option name="project" value="LOCAL" />
       <updated>1729631739646</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="discord bot implementation">
+      <option name="closed" value="true" />
+      <created>1729631863428</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1729631863428</updated>
+    </task>
+    <task id="LOCAL-00013" summary="discord bot implementation">
+      <option name="closed" value="true" />
+      <created>1729631920611</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1729631920611</updated>
+    </task>
+    <task id="LOCAL-00014" summary="discord bot implementation">
+      <option name="closed" value="true" />
+      <created>1729631979828</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1729631979828</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="OOPS implementation" />

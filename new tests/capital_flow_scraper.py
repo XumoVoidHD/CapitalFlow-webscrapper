@@ -59,7 +59,7 @@ class CapitalFlowScraper:
 
             print(self.default_list)
 
-            self.default_list.to_csv('cursor_pointer_data.csv', index=False)
+            self.default_list.to_csv('wow.csv', index=False)
 
             browser.close()
 
@@ -108,5 +108,5 @@ st.title("CapitalFlow Scraper")
 
 if st.button("Click Me!"):
 
-    df = pd.read_csv("wow.csv")
+    df = pd.read_csv("../wow.csv")
     st.write(df)

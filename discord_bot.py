@@ -18,11 +18,9 @@ def run_discord_bot(bot_token, user_id, signal, call, put):
     async def send_message_to_user(user_id):
         user = await bot.fetch_user(user_id)  # Fetch the user object using the user ID
         try:
-            await user.send(f"Signal: {signal}\nCall: {call}\nPut: {put}")
-            x = put.replace("$", "").replace(",", "")
-            y = call.replace("$", "").replace(",", "")
-            x = float(x)
-            y = float(y)
+            await user.send(f"Signal: {signal}\nCall: ${format(float(call), ",")}\nPut: ${format(float(put), ",")}")
+            x = float(put)
+            y = float(call)
             await user.send(f"Difference: ${format(round(abs(x-y),2), ",")}")
 
             print(f"Message sent to {user.name}")
@@ -32,6 +30,4 @@ def run_discord_bot(bot_token, user_id, signal, call, put):
     # Start the bot with your token
     bot.run(bot_token)
 
-# Example usage:
-# Replace "YOUR_DISCORD_BOT_TOKEN" and "USER_ID" with actual values
 

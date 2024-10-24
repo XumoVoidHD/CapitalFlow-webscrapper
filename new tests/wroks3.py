@@ -54,6 +54,6 @@ with sync_playwright() as p:
     print(df)
 
     # Save the DataFrame to a CSV file
-    df.to_csv('cursor_pointer_data.csv', index=False)
+    df.to_csv('wow.csv', index=False)
 
 
