@@ -8,8 +8,8 @@ import time
 from datetime import datetime
 from discord_bot import run_discord_bot
 
-token = "MTI5ODM4NjAxODA1MDkwMDA2MQ.GwVAKX.enia3A_dCmO-7BaBnP2dxu4du-i_Jj4ET41PPk"
-user = "481415673957056518"
+token = ""
+user = ""
 
 
 if 'email' not in st.session_state:
@@ -231,7 +231,6 @@ def run_alert(email, password, queue):
 def run_scraper(email, password, queue):
     scraper = CapitalFlowScraper(email, password, queue)
     df = scraper.default()
-    print(df)
 
 def send_msg(signal, call, put):
     run_discord_bot(bot_token=token, user_id=user, signal=signal, call=call, put=put)
