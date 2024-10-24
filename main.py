@@ -7,6 +7,9 @@ import time
 from datetime import datetime
 from discord_bot import send_message
 
+token =
+user =
+url =
 
 if 'email' not in st.session_state:
     st.session_state['email'] = ''
@@ -231,7 +234,7 @@ def run_scraper(email, password, queue):
 
 
 def send_msg(signal, call, put):
-
+    send_message(bot_token=token, user_id=user, signal=signal, call=call, put=put, webhook_url=url, send_to_user=True, send_to_webhook=True)
 
 
 def driver():

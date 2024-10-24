@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="11d63c4b-e274-48fa-9c12-325bb074046f" name="Changes" comment="Alerts implemented">
+    <list default="true" id="11d63c4b-e274-48fa-9c12-325bb074046f" name="Changes" comment="changes">
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -324,7 +324,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729784607239</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="changes">
+      <option name="closed" value="true" />
+      <created>1729784872056</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1729784872056</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -344,6 +352,7 @@
     <MESSAGE value="scrapper updated" />
     <MESSAGE value="discord bot implementation" />
     <MESSAGE value="Alerts implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alerts implemented" />
+    <MESSAGE value="changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes" />
   </component>
 </project>
