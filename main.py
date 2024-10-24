@@ -234,7 +234,7 @@ def run_scraper(email, password, queue):
     print(df)
 
 def send_msg(signal, call, put):
-    run_discord_bot(bot_token=token, user_id=user, signal=signal, call=call, put=put)
+    # run_discord_bot(bot_token=token, user_id=user, signal=signal, call=call, put=put)
 
 def driver():
     df = pd.read_csv("wow.csv")

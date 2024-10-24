@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+
 def run_discord_bot(bot_token, user_id, signal, call, put):
     # Set up the bot with a command prefix
     intents = discord.Intents.default()
