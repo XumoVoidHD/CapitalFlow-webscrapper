@@ -231,6 +231,7 @@ def run_alert(email, password, queue):
 def run_scraper(email, password, queue):
     scraper = CapitalFlowScraper(email, password, queue)
     df = scraper.default()
+    print(df)
 
 def send_msg(signal, call, put):
     run_discord_bot(bot_token=token, user_id=user, signal=signal, call=call, put=put)
