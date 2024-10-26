@@ -271,7 +271,6 @@ class CapitalFlowScraper:
 
     def signal_gen(self):
         try:
-            # Load prev_signal from JSON file if it exists
             json_file = "prev_signal_data.json"
             if os.path.exists(json_file):
                 with open(json_file, "r") as file:
@@ -300,7 +299,6 @@ class CapitalFlowScraper:
                 html = page.content()
                 soup = BeautifulSoup(html, 'html.parser')
 
-                # Retrieve current sentiment
                 sentiment_element = soup.find('p', {
                     'data-hint': 'Based on received call and put premium this will show current bullish or bearish sentiment.'})
                 if sentiment_element:
@@ -310,7 +308,6 @@ class CapitalFlowScraper:
                     print("Sentiment element not found based on data-hint.")
                     current_signal = "Unknown"
 
-                # Retrieve call premium
                 call_premium_element = soup.find('p', {
                     'data-hint': 'Total call premium on executed contracts observed over $2.5k.'})
                 if call_premium_element:
@@ -319,7 +316,6 @@ class CapitalFlowScraper:
                     print("Call premium element not found based on data-hint.")
                     call_premium = 0.0
 
-                # Retrieve put premium
                 put_premium_element = soup.find('p', {
                     'data-hint': 'Total put premium on executed contracts observed over $2.5k.'})
                 if put_premium_element:
@@ -328,18 +324,14 @@ class CapitalFlowScraper:
                     print("Put premium element not found based on data-hint.")
                     put_premium = 0.0
 
-                # If current sentiment is unknown, decide based on call/put premium comparison
                 if current_signal == "Unknown" and call_premium and put_premium:
                     current_signal = "Bearish" if put_premium > call_premium else "Bullish"
 
-                # Check if the current signal differs from the previous signal
                 if prev_signal != current_signal:
-                    # Notify if signal has changed
                     pro = Process(target=send_msg, args=(current_signal, call_premium, put_premium))
                     pro.start()
                     print(f"Signal change detected. Notification sent: {current_signal}")
 
-                    # Update the JSON file with the new signal
                     with open(json_file, "w") as file:
                         json.dump({"prev_signal": current_signal}, file)
 
@@ -378,13 +370,10 @@ def driver():
     try:
         df = pd.read_excel("wow.xlsx")
 
-        # Sidebar for including symbols
         included_symbols = st.sidebar.multiselect("Include Symbol(s)", options=df['Symbol'].unique(), default=[])
 
-        # Sidebar for excluding symbols
         excluded_symbols = st.sidebar.multiselect("Exclude Symbol(s)", options=df['Symbol'].unique(), default=[])
 
-        # Session state variables for custom filters
         if 'custom_spot' not in st.session_state:
             st.session_state.custom_spot = -1.0
 
@@ -406,7 +395,6 @@ def driver():
         if 'filter_time' not in st.session_state:
             st.session_state.filter_time = datetime.now().time()
 
-        # Sidebar inputs for numeric filters
         st.session_state.custom_spot = st.sidebar.number_input("Spot Limit", min_value=-1.0, max_value=5000.0,
                                                                value=st.session_state.custom_spot, step=0.01)
         st.session_state.custom_price = st.sidebar.number_input("Price Limit", min_value=-1.0, max_value=5000.0,
@@ -426,7 +414,6 @@ def driver():
 
         filter_datetime = datetime.combine(st.session_state.filter_date, st.session_state.filter_time)
 
-        # Data cleaning and conversion
         df['Date'] = pd.to_datetime(df['Date'], format="%m/%d/%y, %I:%M:%S %p")
 
         df['Spot'] = df['Spot'].replace({'\$': '', ',': '', '--': None}, regex=True)
@@ -444,13 +431,11 @@ def driver():
         df['Size'] = df['Size'].replace({',': '', '--': None}, regex=True)
         df['Size'] = pd.to_numeric(df['Size'], errors='coerce')
 
-        # Filter based on symbols: Include or exclude
         if included_symbols:
             filtered_df = df[df['Symbol'].isin(included_symbols)]
         else:
             filtered_df = df[~df['Symbol'].isin(excluded_symbols)]
 
-        # Apply filters for date, spot, price, premium, volume, and size
         filtered_df = filtered_df[filtered_df['Date'] < filter_datetime]
         filtered_df = filtered_df[filtered_df['Spot'] >= st.session_state.custom_spot]
         filtered_df = filtered_df[filtered_df['Price'] >= st.session_state.custom_price]
@@ -458,12 +443,10 @@ def driver():
         filtered_df = filtered_df[filtered_df['Volume'] >= st.session_state.custom_volume]
         filtered_df = filtered_df[filtered_df['Size'] >= st.session_state.custom_size]
 
-        # Formatting the output
         filtered_df['Spot'] = filtered_df['Spot'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
         filtered_df['Price'] = filtered_df['Price'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
         filtered_df['Premium'] = filtered_df['Premium'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
 
-        # Display the filtered dataframe
         st.dataframe(filtered_df.reset_index(drop=True))
 
     except Exception as e:
@@ -529,20 +512,16 @@ def main():
 
 
 def alert():
-    # Set up the session state variable for alerts
     if 'run_alert' not in st.session_state:
         st.session_state.run_alert = False
 
-    # Start the alert process when "Alerts" button is pressed
     if st.button("Alerts"):
         st.session_state.run_alert = True
 
-    # Display Stop button only if Alerts button has been pressed
     if st.session_state.run_alert:
         if st.button("Stop Alerts"):
             st.session_state.run_alert = False
 
-    # Run the alert check loop if the alert process is running
     if st.session_state.run_alert:
         email = st.session_state['email']
         password = st.session_state['password']
@@ -554,7 +533,6 @@ def alert():
             status_placeholder = st.empty()
 
             for i in range(3):
-                # Check if the process should still run
                 if not st.session_state.run_alert:
                     break
 
@@ -578,54 +556,45 @@ def alert():
 
                 process.join()
 
-                # Break if stopped during the wait
                 if i < 2 and st.session_state.run_alert:
-                    time.sleep(15*60)
+                    time.sleep(15 * 60)
 
         else:
             st.error("Please provide both email and password.")
 
 
-
 def trend():
-    # Set up the session state variables
     if 'run_trend' not in st.session_state:
         st.session_state.run_trend = False
 
-    # Start the trend process when "Trend" button is pressed
     if st.button("Trend"):
         st.session_state.run_trend = True
 
-    # Display Stop button only if Trend button has been pressed
     if st.session_state.run_trend:
         if st.button("Stop"):
             st.session_state.run_trend = False
 
-    # Run the alert check loop if the trend process is running
     if st.session_state.run_trend:
         email = st.session_state['email']
         password = st.session_state['password']
 
         if email and password:
-            # Display initial status message if not set
             if 'status_msg' not in st.session_state:
                 st.session_state['status_msg'] = "Starting alert checks..."
 
-            # While loop controlled by the `run_trend` session state flag
             queue = Queue()
             while st.session_state.run_trend:
                 process = Process(target=run_trend, args=(email, password, queue))
                 process.start()
 
                 while process.is_alive():
-                    # Check for alerts in the queue
                     if not queue.empty():
                         result = queue.get()
                         if isinstance(result, str) and "error" in result.lower():
                             st.error(result)
-                            st.session_state.run_trend = False  # Stop on error
+                            st.session_state.run_trend = False
                         else:
-                            st.write(result)  # Display the result or status update
+                            st.write(result)
 
                 process.join()
 
@@ -634,14 +603,10 @@ def trend():
 
 
 st.title("CapitalFlow Project")
-# Create two columns
 left, right = st.columns(2)
 
-# Left column with the Alerts button
 if left.button("Alerts", use_container_width=True):
-    # Redirect to the /alerts page
     st.switch_page("pages/alerts.py")
 
-# Right column with an emoji button
 if right.button("Filters", use_container_width=True):
     st.switch_page("pages/filter.py")
