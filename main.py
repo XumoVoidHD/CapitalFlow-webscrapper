@@ -580,7 +580,7 @@ def alert():
 
                 # Break if stopped during the wait
                 if i < 2 and st.session_state.run_alert:
-                    time.sleep(5)
+                    time.sleep(15*60)
 
         else:
             st.error("Please provide both email and password.")
