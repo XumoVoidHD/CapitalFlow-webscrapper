@@ -24,6 +24,7 @@ if 'put' not in st.session_state:
 if 'signal' not in st.session_state:
     st.session_state['signal'] = None
 
+
 class CapitalFlowScraper:
     def __init__(self, email, password, queue):
         self.default_list = pd.DataFrame()
@@ -374,95 +375,99 @@ def send_msg(signal, call, put):
 
 
 def driver():
-    df = pd.read_excel("wow.xlsx")
+    try:
+        df = pd.read_excel("wow.xlsx")
 
-    # Sidebar for including symbols
-    included_symbols = st.sidebar.multiselect("Include Symbol(s)", options=df['Symbol'].unique(), default=[])
+        # Sidebar for including symbols
+        included_symbols = st.sidebar.multiselect("Include Symbol(s)", options=df['Symbol'].unique(), default=[])
 
-    # Sidebar for excluding symbols
-    excluded_symbols = st.sidebar.multiselect("Exclude Symbol(s)", options=df['Symbol'].unique(), default=[])
+        # Sidebar for excluding symbols
+        excluded_symbols = st.sidebar.multiselect("Exclude Symbol(s)", options=df['Symbol'].unique(), default=[])
 
-    # Session state variables for custom filters
-    if 'custom_spot' not in st.session_state:
-        st.session_state.custom_spot = -1.0
+        # Session state variables for custom filters
+        if 'custom_spot' not in st.session_state:
+            st.session_state.custom_spot = -1.0
 
-    if 'custom_price' not in st.session_state:
-        st.session_state.custom_price = -1.0
+        if 'custom_price' not in st.session_state:
+            st.session_state.custom_price = -1.0
 
-    if 'custom_premium' not in st.session_state:
-        st.session_state.custom_premium = 1.0
+        if 'custom_premium' not in st.session_state:
+            st.session_state.custom_premium = 1.0
 
-    if 'custom_volume' not in st.session_state:
-        st.session_state.custom_volume = -1
+        if 'custom_volume' not in st.session_state:
+            st.session_state.custom_volume = -1
 
-    if 'custom_size' not in st.session_state:
-        st.session_state.custom_size = -1
+        if 'custom_size' not in st.session_state:
+            st.session_state.custom_size = -1
 
-    if 'filter_date' not in st.session_state:
-        st.session_state.filter_date = datetime.today().date()
+        if 'filter_date' not in st.session_state:
+            st.session_state.filter_date = datetime.today().date()
 
-    if 'filter_time' not in st.session_state:
-        st.session_state.filter_time = datetime.now().time()
+        if 'filter_time' not in st.session_state:
+            st.session_state.filter_time = datetime.now().time()
 
-    # Sidebar inputs for numeric filters
-    st.session_state.custom_spot = st.sidebar.number_input("Spot Limit", min_value=-1.0, max_value=5000.0,
-                                                           value=st.session_state.custom_spot, step=0.01)
-    st.session_state.custom_price = st.sidebar.number_input("Price Limit", min_value=-1.0, max_value=5000.0,
-                                                            value=st.session_state.custom_price, step=0.01)
-    st.session_state.custom_premium = st.sidebar.number_input("Premium Limit", min_value=1.0,
-                                                              max_value=999999999999999.0,
-                                                              value=st.session_state.custom_premium, step=0.01)
-    st.session_state.custom_volume = st.sidebar.number_input("Volume Limit", min_value=-1,
-                                                             max_value=9999999999,
-                                                             value=st.session_state.custom_volume, step=1)
-    st.session_state.custom_size = st.sidebar.number_input("Size Limit", min_value=-1,
-                                                           max_value=9999999999,
-                                                           value=st.session_state.custom_size, step=1)
+        # Sidebar inputs for numeric filters
+        st.session_state.custom_spot = st.sidebar.number_input("Spot Limit", min_value=-1.0, max_value=5000.0,
+                                                               value=st.session_state.custom_spot, step=0.01)
+        st.session_state.custom_price = st.sidebar.number_input("Price Limit", min_value=-1.0, max_value=5000.0,
+                                                                value=st.session_state.custom_price, step=0.01)
+        st.session_state.custom_premium = st.sidebar.number_input("Premium Limit", min_value=1.0,
+                                                                  max_value=999999999999999.0,
+                                                                  value=st.session_state.custom_premium, step=0.01)
+        st.session_state.custom_volume = st.sidebar.number_input("Volume Limit", min_value=-1,
+                                                                 max_value=9999999999,
+                                                                 value=st.session_state.custom_volume, step=1)
+        st.session_state.custom_size = st.sidebar.number_input("Size Limit", min_value=-1,
+                                                               max_value=9999999999,
+                                                               value=st.session_state.custom_size, step=1)
 
-    st.session_state.filter_date = st.sidebar.date_input("Filter before date", value=st.session_state.filter_date)
-    st.session_state.filter_time = st.sidebar.time_input("Filter before time", value=st.session_state.filter_time)
+        st.session_state.filter_date = st.sidebar.date_input("Filter before date", value=st.session_state.filter_date)
+        st.session_state.filter_time = st.sidebar.time_input("Filter before time", value=st.session_state.filter_time)
 
-    filter_datetime = datetime.combine(st.session_state.filter_date, st.session_state.filter_time)
+        filter_datetime = datetime.combine(st.session_state.filter_date, st.session_state.filter_time)
 
-    # Data cleaning and conversion
-    df['Date'] = pd.to_datetime(df['Date'], format="%m/%d/%y, %I:%M:%S %p")
+        # Data cleaning and conversion
+        df['Date'] = pd.to_datetime(df['Date'], format="%m/%d/%y, %I:%M:%S %p")
 
-    df['Spot'] = df['Spot'].replace({'\$': '', ',': '', '--': None}, regex=True)
-    df['Spot'] = pd.to_numeric(df['Spot'], errors='coerce')
+        df['Spot'] = df['Spot'].replace({'\$': '', ',': '', '--': None}, regex=True)
+        df['Spot'] = pd.to_numeric(df['Spot'], errors='coerce')
 
-    df['Price'] = df['Price'].replace({'\$': '', ',': '', '--': None}, regex=True)
-    df['Price'] = pd.to_numeric(df['Price'], errors='coerce')
+        df['Price'] = df['Price'].replace({'\$': '', ',': '', '--': None}, regex=True)
+        df['Price'] = pd.to_numeric(df['Price'], errors='coerce')
 
-    df['Premium'] = df['Premium'].replace({'\$': '', ',': '', '--': None}, regex=True)
-    df['Premium'] = pd.to_numeric(df['Premium'], errors='coerce')
+        df['Premium'] = df['Premium'].replace({'\$': '', ',': '', '--': None}, regex=True)
+        df['Premium'] = pd.to_numeric(df['Premium'], errors='coerce')
 
-    df['Volume'] = df['Volume'].replace({',': '', '--': None}, regex=True)
-    df['Volume'] = pd.to_numeric(df['Volume'], errors='coerce')
+        df['Volume'] = df['Volume'].replace({',': '', '--': None}, regex=True)
+        df['Volume'] = pd.to_numeric(df['Volume'], errors='coerce')
 
-    df['Size'] = df['Size'].replace({',': '', '--': None}, regex=True)
-    df['Size'] = pd.to_numeric(df['Size'], errors='coerce')
+        df['Size'] = df['Size'].replace({',': '', '--': None}, regex=True)
+        df['Size'] = pd.to_numeric(df['Size'], errors='coerce')
 
-    # Filter based on symbols: Include or exclude
-    if included_symbols:
-        filtered_df = df[df['Symbol'].isin(included_symbols)]
-    else:
-        filtered_df = df[~df['Symbol'].isin(excluded_symbols)]
+        # Filter based on symbols: Include or exclude
+        if included_symbols:
+            filtered_df = df[df['Symbol'].isin(included_symbols)]
+        else:
+            filtered_df = df[~df['Symbol'].isin(excluded_symbols)]
 
-    # Apply filters for date, spot, price, premium, volume, and size
-    filtered_df = filtered_df[filtered_df['Date'] < filter_datetime]
-    filtered_df = filtered_df[filtered_df['Spot'] >= st.session_state.custom_spot]
-    filtered_df = filtered_df[filtered_df['Price'] >= st.session_state.custom_price]
-    filtered_df = filtered_df[filtered_df['Premium'] >= st.session_state.custom_premium]
-    filtered_df = filtered_df[filtered_df['Volume'] >= st.session_state.custom_volume]
-    filtered_df = filtered_df[filtered_df['Size'] >= st.session_state.custom_size]
+        # Apply filters for date, spot, price, premium, volume, and size
+        filtered_df = filtered_df[filtered_df['Date'] < filter_datetime]
+        filtered_df = filtered_df[filtered_df['Spot'] >= st.session_state.custom_spot]
+        filtered_df = filtered_df[filtered_df['Price'] >= st.session_state.custom_price]
+        filtered_df = filtered_df[filtered_df['Premium'] >= st.session_state.custom_premium]
+        filtered_df = filtered_df[filtered_df['Volume'] >= st.session_state.custom_volume]
+        filtered_df = filtered_df[filtered_df['Size'] >= st.session_state.custom_size]
 
-    # Formatting the output
-    filtered_df['Spot'] = filtered_df['Spot'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
-    filtered_df['Price'] = filtered_df['Price'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
-    filtered_df['Premium'] = filtered_df['Premium'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
+        # Formatting the output
+        filtered_df['Spot'] = filtered_df['Spot'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
+        filtered_df['Price'] = filtered_df['Price'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
+        filtered_df['Premium'] = filtered_df['Premium'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
 
-    # Display the filtered dataframe
-    st.dataframe(filtered_df.reset_index(drop=True))
+        # Display the filtered dataframe
+        st.dataframe(filtered_df.reset_index(drop=True))
+
+    except Exception as e:
+        st.write("No data available")
 
 
 def main():
@@ -524,7 +529,21 @@ def main():
 
 
 def alert():
+    # Set up the session state variable for alerts
+    if 'run_alert' not in st.session_state:
+        st.session_state.run_alert = False
+
+    # Start the alert process when "Alerts" button is pressed
     if st.button("Alerts"):
+        st.session_state.run_alert = True
+
+    # Display Stop button only if Alerts button has been pressed
+    if st.session_state.run_alert:
+        if st.button("Stop Alerts"):
+            st.session_state.run_alert = False
+
+    # Run the alert check loop if the alert process is running
+    if st.session_state.run_alert:
         email = st.session_state['email']
         password = st.session_state['password']
 
@@ -535,6 +554,10 @@ def alert():
             status_placeholder = st.empty()
 
             for i in range(3):
+                # Check if the process should still run
+                if not st.session_state.run_alert:
+                    break
+
                 st.session_state['status_message'] = f"Running alert check {i + 1}/3..."
                 status_placeholder.write(st.session_state['status_message'])
 
@@ -555,11 +578,13 @@ def alert():
 
                 process.join()
 
-                if i < 2:
-                    time.sleep(15 * 60)
+                # Break if stopped during the wait
+                if i < 2 and st.session_state.run_alert:
+                    time.sleep(5)
 
         else:
             st.error("Please provide both email and password.")
+
 
 
 def trend():
@@ -608,6 +633,15 @@ def trend():
             st.error("Please provide both email and password.")
 
 
-if __name__ == "__main__":
-    main()
-    driver()
+st.title("CapitalFlow Project")
+# Create two columns
+left, right = st.columns(2)
+
+# Left column with the Alerts button
+if left.button("Alerts", use_container_width=True):
+    # Redirect to the /alerts page
+    st.switch_page("pages/alerts.py")
+
+# Right column with an emoji button
+if right.button("Filters", use_container_width=True):
+    st.switch_page("pages/filter.py")

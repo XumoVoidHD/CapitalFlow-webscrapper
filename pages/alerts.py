@@ -1,7 +1,5 @@
 from main import alert, trend
 import streamlit as st
-from multiprocessing import Process, Queue
-import time
 
 if 'email' not in st.session_state:
     st.session_state['email'] = ''
