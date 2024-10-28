@@ -9,9 +9,9 @@ from discord_bot import send_message
 import os
 import json
 
-token = ""
-user = ""
-url = ""
+token = "MTI5ODM4NjAxODA1MDkwMDA2MQ.GjbS4p.RP4yRaYjO-u1c4BJ6vYXGMvsS6ZuMSFX7F0-x4"
+user = "481415673957056518"
+url = "https://discord.com/api/webhooks/1299030105255051407/eljJzFZJjQMitrgD9LRjR6KsTq7XxQM64PbRsjSr_zGTbPIHeXbsOtCf1J_Yp0FiWlRV"
 
 if 'email' not in st.session_state:
     st.session_state['email'] = ''
@@ -370,10 +370,11 @@ def driver():
     try:
         df = pd.read_excel("wow.xlsx")
 
+        # Set up sidebar options for filters
         included_symbols = st.sidebar.multiselect("Include Symbol(s)", options=df['Symbol'].unique(), default=[])
-
         excluded_symbols = st.sidebar.multiselect("Exclude Symbol(s)", options=df['Symbol'].unique(), default=[])
 
+        # Initialize session state variables if they do not exist
         if 'custom_spot' not in st.session_state:
             st.session_state.custom_spot = -1.0
 
@@ -395,6 +396,37 @@ def driver():
         if 'filter_time' not in st.session_state:
             st.session_state.filter_time = datetime.now().time()
 
+        # Initialize Call/Put filter session state
+        if 'call_put_filter' not in st.session_state:
+            st.session_state.call_put_filter = "All"
+
+        st.sidebar.write("First select additional filters then press on these buttons")
+
+        if st.sidebar.button("NASDAQ"):
+            included_symbols = [
+                "AAPL", "AMZN", "MSFT", "FB", "GOOGL", "TSLA", "NFLX", "NVDA", "INTC",
+                "CSCO", "PYPL", "ADBE", "CMCSA", "PEP", "AMGN", "COST", "SBUX",
+                "TXN", "QCOM", "AVGO", "MDLZ", "NKE", "ISRG", "AMAT", "GILD",
+                "ATVI", "FISV", "INTU", "BKNG", "ADP", "CSX", "SNPS", "ZM",
+                "MRNA", "BIDU", "FANG", "LRCX", "DOCU", "ILMN", "MAR", "MELI",
+                "PDD", "NOW", "EA", "WDAY", "DXCM", "VRSK", "VIV", "NTES"
+            ]
+            st.session_state.included_symbols = included_symbols
+
+        # Button to include US30 stocks
+        if st.sidebar.button("US30"):
+            included_symbols = [
+                "AAPL", "MSFT", "AMZN", "WMT", "JPM", "V", "UNH", "HD", "PG", "JNJ",
+                "KO", "CRM", "CVX", "MRK", "CSCO", "MCD", "IBM", "AXP", "CAT", "VZ",
+                "DIS", "GS", "AMGN", "HON", "NKE", "BA", "INTC", "MMM", "TRV", "DOW"
+            ]
+            st.session_state.included_symbols = included_symbols
+
+        # Call/Put filter selection
+        st.session_state.call_put_filter = st.sidebar.selectbox("Call/Put", options=["All", "Call", "Put"],
+                                                                index=["All", "Call", "Put"].index(st.session_state.call_put_filter))
+
+        # Input fields for filters
         st.session_state.custom_spot = st.sidebar.number_input("Spot Limit", min_value=-1.0, max_value=5000.0,
                                                                value=st.session_state.custom_spot, step=0.01)
         st.session_state.custom_price = st.sidebar.number_input("Price Limit", min_value=-1.0, max_value=5000.0,
@@ -412,22 +444,30 @@ def driver():
         st.session_state.filter_date = st.sidebar.date_input("Filter before date", value=st.session_state.filter_date)
         st.session_state.filter_time = st.sidebar.time_input("Filter before time", value=st.session_state.filter_time)
 
+        # Button to reset filters
+        if st.sidebar.button("Reset Filters"):
+            st.session_state.custom_spot = -1.0
+            st.session_state.custom_price = -1.0
+            st.session_state.custom_premium = 1.0
+            st.session_state.custom_volume = -1
+            st.session_state.custom_size = -1
+            st.session_state.filter_date = datetime.today().date()
+            st.session_state.filter_time = datetime.now().time()
+            st.session_state.call_put_filter = "All"  # Reset Call/Put filter
+            st.switch_page("pages/filter.py")
+
         filter_datetime = datetime.combine(st.session_state.filter_date, st.session_state.filter_time)
 
+        # Process DataFrame and apply filters
         df['Date'] = pd.to_datetime(df['Date'], format="%m/%d/%y, %I:%M:%S %p")
-
         df['Spot'] = df['Spot'].replace({'\$': '', ',': '', '--': None}, regex=True)
         df['Spot'] = pd.to_numeric(df['Spot'], errors='coerce')
-
         df['Price'] = df['Price'].replace({'\$': '', ',': '', '--': None}, regex=True)
         df['Price'] = pd.to_numeric(df['Price'], errors='coerce')
-
         df['Premium'] = df['Premium'].replace({'\$': '', ',': '', '--': None}, regex=True)
         df['Premium'] = pd.to_numeric(df['Premium'], errors='coerce')
-
         df['Volume'] = df['Volume'].replace({',': '', '--': None}, regex=True)
         df['Volume'] = pd.to_numeric(df['Volume'], errors='coerce')
-
         df['Size'] = df['Size'].replace({',': '', '--': None}, regex=True)
         df['Size'] = pd.to_numeric(df['Size'], errors='coerce')
 
@@ -443,6 +483,20 @@ def driver():
         filtered_df = filtered_df[filtered_df['Volume'] >= st.session_state.custom_volume]
         filtered_df = filtered_df[filtered_df['Size'] >= st.session_state.custom_size]
 
+        if st.session_state.call_put_filter != "All":
+            filtered_df = filtered_df[filtered_df['Call/Put'] == st.session_state.call_put_filter]
+
+        total_call_premium = filtered_df[filtered_df['Call/Put'] == 'Call']['Premium'].sum()
+        total_put_premium = filtered_df[filtered_df['Call/Put'] == 'Put']['Premium'].sum()
+
+        if total_call_premium > total_put_premium:
+            st.write("Market Sentiment (calculated based on filters): Bearish")
+        else:
+            st.write("Market Sentiment (calculated based on filters): Bullish")
+
+        st.write(f"Total Call Premium (calculated based on filters): ${total_call_premium:,.2f}")
+        st.write(f"Total Put Premium (calculated based on filters): ${total_put_premium:,.2f}")
+
         filtered_df['Spot'] = filtered_df['Spot'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
         filtered_df['Price'] = filtered_df['Price'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
         filtered_df['Premium'] = filtered_df['Premium'].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else '--')
@@ -451,7 +505,6 @@ def driver():
 
     except Exception as e:
         st.write("No data available")
-
 
 def main():
     st.title("CapitalFlow Scraper")
@@ -506,9 +559,13 @@ def main():
         st.session_state['call'] = "0"
         st.session_state['put'] = "0"
 
-    st.write(f"Signal: {st.session_state['signal']}")
-    st.write(f"Total Call Premium: ${format(float(st.session_state['call']), ",")}")
-    st.write(f"Total Put Premium: ${format(float(st.session_state['put']), ",")}")
+    st.write(f"Signal (total taken from website): {st.session_state['signal']}")
+    st.write(f"Total Call Premium (total taken from website): ${format(float(st.session_state['call']), ",")}")
+    st.write(f"Total Put Premium (total taken from website): ${format(float(st.session_state['put']), ",")}")
+
+def us30_signal(data):
+    df = data
+
 
 
 def alert():
