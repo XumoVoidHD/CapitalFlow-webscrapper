@@ -370,11 +370,9 @@ def driver():
     try:
         df = pd.read_excel("wow.xlsx")
 
-        # Set up sidebar options for filters
         included_symbols = st.sidebar.multiselect("Include Symbol(s)", options=df['Symbol'].unique(), default=[])
         excluded_symbols = st.sidebar.multiselect("Exclude Symbol(s)", options=df['Symbol'].unique(), default=[])
 
-        # Initialize session state variables if they do not exist
         if 'custom_spot' not in st.session_state:
             st.session_state.custom_spot = -1.0
 
@@ -396,7 +394,6 @@ def driver():
         if 'filter_time' not in st.session_state:
             st.session_state.filter_time = datetime.now().time()
 
-        # Initialize Call/Put filter session state
         if 'call_put_filter' not in st.session_state:
             st.session_state.call_put_filter = "All"
 
@@ -413,7 +410,6 @@ def driver():
             ]
             st.session_state.included_symbols = included_symbols
 
-        # Button to include US30 stocks
         if st.sidebar.button("US30"):
             included_symbols = [
                 "AAPL", "MSFT", "AMZN", "WMT", "JPM", "V", "UNH", "HD", "PG", "JNJ",
@@ -422,11 +418,9 @@ def driver():
             ]
             st.session_state.included_symbols = included_symbols
 
-        # Call/Put filter selection
         st.session_state.call_put_filter = st.sidebar.selectbox("Call/Put", options=["All", "Call", "Put"],
                                                                 index=["All", "Call", "Put"].index(st.session_state.call_put_filter))
 
-        # Input fields for filters
         st.session_state.custom_spot = st.sidebar.number_input("Spot Limit", min_value=-1.0, max_value=5000.0,
                                                                value=st.session_state.custom_spot, step=0.01)
         st.session_state.custom_price = st.sidebar.number_input("Price Limit", min_value=-1.0, max_value=5000.0,
@@ -444,7 +438,6 @@ def driver():
         st.session_state.filter_date = st.sidebar.date_input("Filter before date", value=st.session_state.filter_date)
         st.session_state.filter_time = st.sidebar.time_input("Filter before time", value=st.session_state.filter_time)
 
-        # Button to reset filters
         if st.sidebar.button("Reset Filters"):
             st.session_state.custom_spot = -1.0
             st.session_state.custom_price = -1.0
@@ -453,12 +446,11 @@ def driver():
             st.session_state.custom_size = -1
             st.session_state.filter_date = datetime.today().date()
             st.session_state.filter_time = datetime.now().time()
-            st.session_state.call_put_filter = "All"  # Reset Call/Put filter
+            st.session_state.call_put_filter = "All"
             st.switch_page("pages/filter.py")
 
         filter_datetime = datetime.combine(st.session_state.filter_date, st.session_state.filter_time)
 
-        # Process DataFrame and apply filters
         df['Date'] = pd.to_datetime(df['Date'], format="%m/%d/%y, %I:%M:%S %p")
         df['Spot'] = df['Spot'].replace({'\$': '', ',': '', '--': None}, regex=True)
         df['Spot'] = pd.to_numeric(df['Spot'], errors='coerce')
