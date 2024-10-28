@@ -9,9 +9,9 @@ from discord_bot import send_message
 import os
 import json
 
-token = "MTI5ODM4NjAxODA1MDkwMDA2MQ.GjbS4p.RP4yRaYjO-u1c4BJ6vYXGMvsS6ZuMSFX7F0-x4"
-user = "481415673957056518"
-url = "https://discord.com/api/webhooks/1299030105255051407/eljJzFZJjQMitrgD9LRjR6KsTq7XxQM64PbRsjSr_zGTbPIHeXbsOtCf1J_Yp0FiWlRV"
+token = ""
+user = ""
+url = ""
 
 if 'email' not in st.session_state:
     st.session_state['email'] = ''
