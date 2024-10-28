@@ -9,9 +9,6 @@ from discord_bot import send_message
 import os
 import json
 
-token = " "
-user = " "
-url = " "
 
 if 'email' not in st.session_state:
     st.session_state['email'] = ''
