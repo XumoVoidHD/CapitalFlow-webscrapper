@@ -10,9 +10,9 @@ import json
 import subprocess
 from multiprocessing import Process
 
-token = "MTI5ODM4NjAxODA1MDkwMDA2MQ.G_UeMa.hnPypbNGto1XFHni7ZwoEW3B3VWPgcETnJYS_U"
-user = "481415673957056518"
-url = "https://discord.com/api/webhooks/1299030091636146289/m30T5-SjU_v7K7nZN1Fgs-cylHOB7eUwZ4Y9sbQDOLih43SuNr1crroHqwEoswZLrYy7"
+token =
+user =
+url =
 
 if 'email' not in st.session_state:
     st.session_state['email'] = ''
