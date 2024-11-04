@@ -9,7 +9,6 @@ from discord_bot import send_message
 import os
 import json
 
-
 token = ""
 user = ""
 url = ""
@@ -80,27 +79,25 @@ class CapitalFlowScraper:
                 call_premium_element = soup.find('p', {
                     'data-hint': 'Total call premium on executed contracts observed over $2.5k.'})
                 if call_premium_element:
-                    call_premium = float(call_premium_element.get_text(strip=True).replace('$', '').replace(',', ''))
-                    print(f"Call: {call_premium}")
-                    self.call = call_premium
+                    call_premium_text = call_premium_element.get_text(strip=True).replace('$', '').replace(',', '')
+                    self.call = float(call_premium_text) if call_premium_text != "---" else "Unknown"
+                    print(f"Call: {self.call}")
                 else:
                     print("Call not found")
+                    self.call = "Unknown"
 
                 put_premium_element = soup.find('p', {
                     'data-hint': 'Total put premium on executed contracts observed over $2.5k.'})
                 if put_premium_element:
-                    put_premium = float(put_premium_element.get_text(strip=True).replace('$', '').replace(',', ''))
-                    print(f"Put: {put_premium}")
-                    self.put = put_premium
+                    put_premium_text = put_premium_element.get_text(strip=True).replace('$', '').replace(',', '')
+                    self.put = float(put_premium_text) if put_premium_text != "---" else "Unknown"
+                    print(f"Put: {self.put}")
                 else:
                     print("Put not found")
+                    self.put = "Unknown"
 
-                if self.signal == "Unknown" and call_premium and put_premium:
-                    if put_premium > call_premium:
-                        sentiment = "Bearish"
-                    else:
-                        sentiment = "Bullish"
-                    self.signal = sentiment
+                if self.signal == "Unknown" and self.call != "Unknown" and self.put != "Unknown":
+                    self.signal = "Bearish" if self.put > self.call else "Bullish"
 
                 rows = soup.find_all('tr', class_='cursor-pointer')
                 data = []
@@ -165,11 +162,10 @@ class CapitalFlowScraper:
 
                 json_file = "prev_signal_data.json"
                 with open(json_file, "w") as file:
-                    json.dump({"prev_signal": self.signal}, file)
+                    json.dump({"prev_signal_all": self.signal}, file)
 
                 browser.close()
 
-                return self.default_list, self.signal, self.call, self.put
 
         except Exception as e:
             self.queue.put(f"An error occurred: {e}")
@@ -277,7 +273,7 @@ class CapitalFlowScraper:
             if os.path.exists(json_file):
                 with open(json_file, "r") as file:
                     data = json.load(file)
-                    prev_signal = data.get("prev_signal", "Unknown")
+                    prev_signal = data.get("prev_signal_all", "Unknown")
             else:
                 prev_signal = "Unknown"
 
@@ -313,20 +309,22 @@ class CapitalFlowScraper:
                 call_premium_element = soup.find('p', {
                     'data-hint': 'Total call premium on executed contracts observed over $2.5k.'})
                 if call_premium_element:
-                    call_premium = float(call_premium_element.get_text(strip=True).replace('$', '').replace(',', ''))
+                    call_premium_text = call_premium_element.get_text(strip=True).replace('$', '').replace(',', '')
+                    call_premium = float(call_premium_text) if call_premium_text != "---" else "Unknown"
                 else:
                     print("Call premium element not found based on data-hint.")
-                    call_premium = 0.0
+                    call_premium = "Unknown"
 
                 put_premium_element = soup.find('p', {
                     'data-hint': 'Total put premium on executed contracts observed over $2.5k.'})
                 if put_premium_element:
-                    put_premium = float(put_premium_element.get_text(strip=True).replace('$', '').replace(',', ''))
+                    put_premium_text = put_premium_element.get_text(strip=True).replace('$', '').replace(',', '')
+                    put_premium = float(put_premium_text) if put_premium_text != "---" else "Unknown"
                 else:
                     print("Put premium element not found based on data-hint.")
-                    put_premium = 0.0
+                    put_premium = "Unknown"
 
-                if current_signal == "Unknown" and call_premium and put_premium:
+                if current_signal == "Unknown" and call_premium != "Unknown" and put_premium != "Unknown":
                     current_signal = "Bearish" if put_premium > call_premium else "Bullish"
 
                 if prev_signal != current_signal:
@@ -335,13 +333,13 @@ class CapitalFlowScraper:
                     print(f"Signal change detected. Notification sent: {current_signal}")
 
                     with open(json_file, "w") as file:
-                        json.dump({"prev_signal": current_signal}, file)
+                        json.dump({"prev_signal_all": current_signal}, file)
 
                 browser.close()
 
                 print(f"Current Signal: {current_signal}")
-                print(f"Total Call Premium: ${call_premium}")
-                print(f"Total Put Premium: ${put_premium}")
+                print(f"Total Call Premium: ${call_premium if call_premium != 'Unknown' else 'Unknown'}")
+                print(f"Total Put Premium: ${put_premium if put_premium != 'Unknown' else 'Unknown'}")
 
         except Exception as e:
             print(f"An error occurred: {e}")
@@ -352,6 +350,11 @@ def run_trend(email, password, queue):
     scraper.signal_gen()
 
 
+def run_us_30_trend(email, password, queue):
+    scraper = CapitalFlowScraper(email, password, queue)
+    scraper.default()
+
+
 def run_alert(email, password, queue):
     scraper = CapitalFlowScraper(email, password, queue)
     scraper.notif()
@@ -359,12 +362,11 @@ def run_alert(email, password, queue):
 
 def run_scraper(email, password, queue):
     scraper = CapitalFlowScraper(email, password, queue)
-    df = scraper.default()
-    print(df)
+    scraper.default()
 
 
 def send_msg(signal, call, put):
-    send_message(bot_token=token, user_id=user, signal=signal, call=call, put=put, webhook_url=url, send_to_user=True,
+    send_message(bot_token=token, user_id=user, signal=signal, call=call, put=put, webhook_url=url, send_to_user=False,
                  send_to_webhook=True)
 
 
@@ -421,7 +423,8 @@ def driver():
             st.session_state.included_symbols = included_symbols
 
         st.session_state.call_put_filter = st.sidebar.selectbox("Call/Put", options=["All", "Call", "Put"],
-                                                                index=["All", "Call", "Put"].index(st.session_state.call_put_filter))
+                                                                index=["All", "Call", "Put"].index(
+                                                                    st.session_state.call_put_filter))
 
         st.session_state.custom_spot = st.sidebar.number_input("Spot Limit", min_value=-1.0, max_value=5000.0,
                                                                value=st.session_state.custom_spot, step=0.01)
@@ -450,7 +453,6 @@ def driver():
             st.session_state.filter_time = datetime.now().time()
             st.session_state.call_put_filter = "All"
             st.switch_page("pages/filter.py")
-
 
         filter_datetime = datetime.combine(st.session_state.filter_date, st.session_state.filter_time)
 
@@ -499,7 +501,8 @@ def driver():
         st.dataframe(filtered_df.reset_index(drop=True))
 
     except Exception as e:
-        st.write("No data available")
+        st.write(f"No data available {e}")
+
 
 def main():
     st.title("CapitalFlow Scraper")
@@ -555,12 +558,95 @@ def main():
         st.session_state['put'] = "0"
 
     st.write(f"Signal (total taken from website): {st.session_state['signal']}")
-    st.write(f"Total Call Premium (total taken from website): ${format(float(st.session_state['call']), ",")}")
-    st.write(f"Total Put Premium (total taken from website): ${format(float(st.session_state['put']), ",")}")
+    if isinstance(st.session_state['call'], str):
+        st.write(f"Total Call Premium (total taken from website): {st.session_state['call']}")
+    else:
+        st.write(f"Total Call Premium (total taken from website): ${format(float(st.session_state['call']), ',')}")
 
-def us30_signal(data):
-    df = data
+    if isinstance(st.session_state['put'], str):
+        st.write(f"Total Put Premium (total taken from website): {st.session_state['put']}")
+    else:
+        st.write(f"Total Put Premium (total taken from website): ${format(float(st.session_state['put']), ',')}")
 
+
+def us_30_trend():
+    if 'run_us_30_trend' not in st.session_state:
+        st.session_state.run_us_30_trend = False
+
+    if st.button("US_30_Trend"):
+        st.session_state.run_us_30_trend = True
+
+    if st.session_state.run_us_30_trend:
+        if st.button("Stop"):
+            st.session_state.run_us_30_trend = False
+
+    if st.session_state.run_us_30_trend:
+        email = st.session_state['email']
+        password = st.session_state['password']
+
+        if email and password:
+            if 'status_msg' not in st.session_state:
+                st.session_state['status_msg'] = "Starting trend checks..."
+
+            queue = Queue()
+            while st.session_state.run_us_30_trend:
+                process = Process(target=run_us_30_trend, args=(email, password, queue))
+                process.start()
+
+                while process.is_alive():
+                    if not queue.empty():
+                        result = queue.get()
+                        if isinstance(result, str) and "error" in result.lower():
+                            st.error(result)
+                            st.session_state.run_us_30_trend = False
+
+                process.join()
+
+                df = pd.read_excel("wow.xlsx")
+                included_symbols = [
+                    "AAPL", "MSFT", "AMZN", "WMT", "JPM", "V", "UNH", "HD", "PG", "JNJ",
+                    "KO", "CRM", "CVX", "MRK", "CSCO", "MCD", "IBM", "AXP", "CAT", "VZ",
+                    "DIS", "GS", "AMGN", "HON", "NKE", "BA", "INTC", "MMM", "TRV", "DOW"
+                ]
+                df_filtered = df[df['Symbol'].isin(included_symbols)]
+                df_filtered_call = df_filtered[df_filtered['Call/Put'] == 'Call']
+                df_filtered_put = df_filtered[df_filtered['Call/Put'] == 'Put']
+                df_filtered_call['Premium'] = df_filtered_call['Premium'].replace({'\$': '', ',': ''},
+                                                                                  regex=True).astype(float)
+                df_filtered_put['Premium'] = df_filtered_put['Premium'].replace({'\$': '', ',': ''}, regex=True).astype(
+                    float)
+                call_premium = df_filtered_call['Premium'].sum()
+                put_premium = df_filtered_put['Premium'].sum()
+
+                if call_premium > put_premium:
+                    current_signal = "Bearish"
+                elif put_premium < call_premium:
+                    current_signal = "Bullish"
+                else:
+                    current_signal = "Unknown"
+
+                json_file = "prev_signal_data_us30.json"
+                if os.path.exists(json_file):
+                    with open(json_file, "r") as file:
+                        data = json.load(file)
+                        prev_signal = data.get("prev_signal_us30", "Unknown")
+                else:
+                    prev_signal = "Unknown"
+
+                if prev_signal != current_signal:
+                    json_file = "prev_signal_data_us30.json"
+                    with open(json_file, "w") as file:
+                        json.dump({"prev_signal_us30": current_signal}, file)
+
+                    pro = Process(target=send_msg, args=(current_signal, float(call_premium), float(put_premium)))
+                    pro.start()
+                    pro.join()
+                else:
+                    print("No change in signal")
+                process.join()
+
+        else:
+            st.error("Please provide both email and password.")
 
 
 def alert():
@@ -632,7 +718,7 @@ def trend():
 
         if email and password:
             if 'status_msg' not in st.session_state:
-                st.session_state['status_msg'] = "Starting alert checks..."
+                st.session_state['status_msg'] = "Starting trend checks..."
 
             queue = Queue()
             while st.session_state.run_trend:

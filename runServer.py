@@ -16,18 +16,16 @@ if __name__ == "__main__":
     # Register the cleanup function to be called on exit
     atexit.register(cleanup)
 
-    # Run each Streamlit app in a separate process
     processes.append(
         subprocess.Popen([sys.executable, "-m", "streamlit", "run", "filter.py", "--server.headless", "true"]))
-    time.sleep(1)  # Wait for the first app to start
+    time.sleep(1)
     processes.append(
         subprocess.Popen([sys.executable, "-m", "streamlit", "run", "alerts.py", "--server.headless", "true"]))
-    time.sleep(1)  # Wait for the first app to start
+    time.sleep(1)
     processes.append(
         subprocess.Popen([sys.executable, "-m", "streamlit", "run", "trends.py", "--server.headless", "true"]))
-    time.sleep(1)  # Wait for the second app to start
-    processes.append(
-        subprocess.Popen([sys.executable, "-m", "streamlit", "run", "main.py"]))
+    time.sleep(1)
+    processes.append(subprocess.Popen([sys.executable, "-m", "streamlit", "run", "HomePage.py"]))
 
     # Optionally, wait for all processes to finish
     for proc in processes:

@@ -1,4 +1,4 @@
-from func import trend
+from func import trend, us_30_trend
 import streamlit as st
 
 if 'email' not in st.session_state:
@@ -14,3 +14,5 @@ st.session_state['password'] = st.text_input("Enter your password:", value=st.se
 
 st.write("To get notficiation when signal changes press the 'Trend' button")
 trend()
+st.write("To get notficiation when signal changes for US30 stocks press the 'Trend' button")
+us_30_trend()
